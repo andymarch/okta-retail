@@ -83,20 +83,24 @@ app.use(session({
 
 var auth = new auth();
 app.use(auth.setContext)
-app.use('/login',auth.handleAuthorize)
+app.use('/authorize',auth.handleAuthorize)
 app.use('/authorization-code/callback',auth.handleCallback)
 
 app.use(async function (req,res,next){
     if(req.userContext){
         res.locals.user = new UserModel(req.userContext)
+    } else{ 
+        res.locals.user = undefined
     }
     next();
 })
 
 var indexRouter = require('./routes/index')(auth)
 var checkoutRouter = require('./routes/checkout')(auth)
+var customerRouter = require('./routes/customer')(auth)
 app.use('/', indexRouter)
 app.use('/checkout', checkoutRouter)
+app.use('/customer', customerRouter)
 
   
 app.use(function(req, res, next) {

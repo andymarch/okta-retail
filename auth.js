@@ -18,7 +18,7 @@ class Auth {
             if(!req.session.completedRemoteSessionCheck){
                 req.session.destination = req._parsedOriginalUrl.path
                 req.session.completedRemoteSessionCheck = true
-                res.redirect("/login")
+                res.redirect("/authorize")
             }
             else{
                 return next()
@@ -28,6 +28,7 @@ class Auth {
 
     ensureAuthenticated(){
         return async (req, res, next) => {
+            console.log("ensure authenticated")
             if(req.userContext != null){
                 oktaJwtVerifier.verifyAccessToken(req.userContext.tokens.access_token,process.env.TOKEN_AUD)
                 .then(jwt => {
@@ -36,12 +37,12 @@ class Auth {
                 .catch(err => {
                     console.log(err)
                     req.session.destination = req._parsedOriginalUrl.path
-                    res.redirect("/login")
+                    res.redirect("/customer")
                 });      
             }
             else{
                 req.session.destination = req._parsedOriginalUrl.path
-                res.redirect("/login")
+                res.redirect("/customer")
             }
         }
     }
@@ -176,12 +177,7 @@ class Auth {
                 }
                 else {
                     if(req.query.error_description){
-                        if(unescape(req.query.error_description) === 'User creation was disabled.'){
-                            res.redirect("/login?unlinked='true'")
-                        }
-                        else{
-                            res.render('error', {message: unescape(req.query.error_description)})
-                        }
+                        res.render('error', {message: unescape(req.query.error_description)})
                     } else {
                         res.render('error', {message: req.query.error})
                     }
