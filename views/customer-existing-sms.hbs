@@ -1,0 +1,17 @@
+<div class="col-md-6 order-md-1 mb-4 text-center"><h4 class="mb-3">Prove it</h4>
+<hr class="mb-4">
+<div class="row justify-content-center">
+    
+        <form action="/customer/existing/authenticate/sms" method="POST">
+            <p>A code has been sent to your registered device with number {{number}}.
+            </p>
+            <div class="form-group">
+                <label for="firstName">One time code</label>
+                <input class="form-control" type="text" name="password">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Continue</button>
+            </div>
+        </form>
+    </div>
+</div>

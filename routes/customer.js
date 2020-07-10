@@ -210,6 +210,97 @@ module.exports = function (_auth){
         res.render('customer-existing',{id: req.query.id});
     });
 
+    router.post('/existing/progress', async function(req, res, next) {
+        try{
+            var authNresponse = await axios.post(process.env.TENANT_URL + 
+                '/api/v1/authn',{
+                    "username": req.body.email,
+                },{
+                'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            })
+            //TODO handle mfa challenges here
+            req.session.stateToken = authNresponse.data.stateToken
+            req.session.factors = authNresponse.data._embedded.factors
+            res.redirect("/customer/existing/authenticate")          
+        } catch(err){
+            console.log(err)
+            // set locals, only providing error in development
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+    
+            // render the error page
+            res.status(err.status || 500);
+            res.render('error', { title: 'Error' });
+        }
+    });
+
+    router.get('/existing/authenticate',function(req, res, next) {
+        var sms
+        var password
+        req.session.factors.forEach(element => {
+            if(element.factorType === "sms"){
+                req.session.sms = element
+                sms = true
+            } else if (element.factorType === "password"){
+                req.session.password = element
+                password = true
+            }
+        });
+        res.render('customer-existing-auth',{id: req.query.id, password: password, sms: sms});
+    });
+
+    router.post('/existing/authenticate/password',async function(req, res, next) {
+
+        var authNresponse = await axios.post(process.env.TENANT_URL + 
+            '/api/v1/authn/factors/password/verify',{
+                "password": req.body.password,
+                "stateToken": req.session.stateToken
+            },{
+            'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        })
+
+        req.session.factors = undefined
+        req.session.password = undefined
+        req.session.sms = undefined
+        req.session.stateToken = undefined
+
+        req.session.sessionID = authNresponse.data.sessionToken
+        res.redirect("/authorize") 
+    });
+
+    router.get('/existing/authenticate/sms',async function(req, res, next) {
+
+        var authNresponse = await axios.post(process.env.TENANT_URL + 
+            '/api/v1/authn/factors/'+req.session.sms.id+'/verify',{
+                "passcode": "",
+                "stateToken": req.session.stateToken
+            },{
+            'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        })
+
+        req.session.stateToken = authNresponse.data.stateToken
+        res.render('customer-existing-sms',{number: req.session.sms.profile.phoneNumber})
+    });
+
+    router.post('/existing/authenticate/sms',async function(req, res, next) {
+
+            var authNresponse = await axios.post(process.env.TENANT_URL + 
+                '/api/v1/authn/factors/'+req.session.sms.id+'/verify',{
+                    "password": req.body.password,
+                    "stateToken": req.session.stateToken
+                },{
+                'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            })
+
+        req.session.factors = undefined
+        req.session.password = undefined
+        req.session.sms = undefined
+        req.session.stateToken = undefined
+
+        req.session.sessionID = authNresponse.data.sessionToken
+        res.redirect("/authorize") 
+    });
+
     router.post('/existing/complete', async function(req, res, next) {
         try{
             var authNresponse = await axios.post(process.env.TENANT_URL + 
