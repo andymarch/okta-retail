@@ -116,7 +116,7 @@ module.exports = function (_auth){
     });
 
     router.get('/new',function(req, res, next) {
-        res.render('customer-new');
+        res.render('customer-new',{id: req.query.id});
     });
 
     router.post('/new/complete', async function(req, res, next) {
@@ -207,7 +207,7 @@ module.exports = function (_auth){
     });
 
     router.get('/existing',function(req, res, next) {
-        res.render('customer-existing');
+        res.render('customer-existing',{id: req.query.id});
     });
 
     router.post('/existing/complete', async function(req, res, next) {

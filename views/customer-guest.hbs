@@ -1,5 +1,12 @@
-<h1>Guest Checkout</h1>
-<form action="/customer/guest/complete" method="POST">
-    <input type="email" name="email">
-    <button type="submit">Submit</button>
-</form>
+<div class="col-md-6 order-md-1 mb-4 text-center"><h4 class="mb-3">Let's get to know you</h4>
+    <hr class="mb-4">
+    <div class="row justify-content-center">
+        <form action="/customer/guest/complete" method="POST">
+             <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" name="email">
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+</div>

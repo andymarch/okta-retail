@@ -1,6 +1,12 @@
-{{#if user}}
-    {{user.givenName}}
-{{else}}
-    <a href="/customer/existing">Sign In</a>
-    <a href="/customer/new">Register</a>
-{{/if}}
+<div class="py-5 text-center">
+    <a href="/" ><img class="d-block mx-auto mb-4" src="https://avatars1.githubusercontent.com/u/13510430?s=200&v=4" alt="" width="72" height="72"></a>
+    <h2>Okta-Commerce</h2>
+    {{#if user.sub}}
+        {{user.givenName}}
+        <a href="/logout" >Logout</a>
+    {{else}}
+        <a href="/customer/existing">Sign In</a> | 
+        <a href="/customer/new">Register</a>
+    {{/if}}
+</div>
+

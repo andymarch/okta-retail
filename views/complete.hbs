@@ -1,5 +1,9 @@
-<h1>Thank you for your purchase</h1>
-<div>You have access token</div>
-<pre>{{jwt accessToken}}</pre>
-
-<a href="/">Return</a>
+<div class="col-md-8 order-md-1 mb-4 text-center">
+    <h4 class="mb-3">Thank you for your purchase!</h4>
+    <hr class="mb-4">
+    <div class="row justify-content-center">
+        <p>Our IDP has created the following access token</p>
+        <pre>{{jwt accessToken}}</pre>
+    </div>
+    <a class="btn btn-primary" href="/">Complete</a>
+</div>

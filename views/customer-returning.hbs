@@ -1,4 +1,25 @@
-<h1>Welcome back</h1>
-<p>You've previously checked out as as guest with {{email}}, would you like to create an account?</p>
-<a href="/customer/new?id={{email}}">Create account</a>
-<a href="/customer/guest/continue?id={{email}}">Continue as guest</a>
+<div class="col-md-6 order-md-1 mb-4 text-center"><h4 class="mb-3">Welcome back</h4>
+<hr class="mb-4">
+<div class="row text-center">
+    <p>You've previously checked out as a guest with {{email}}, would you like to create an account?</p>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Create an account</h5>
+            <p class="card-text text-muted">I'm a regular around here.</p>
+                <a href="/customer/new?id={{email}}" class="card-link">Create Account</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">I'm a guest</h5>
+            <p class="card-text text-muted">Just passing through...</p>
+                <a href="/customer/guest/continue?id={{email}}" class="card-link">Continue as guest</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>

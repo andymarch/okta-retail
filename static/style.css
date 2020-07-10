@@ -1,0 +1,38 @@
+pre {
+    font-family: monospace;
+    font-size: large;
+    text-align: left;
+    color: white;
+}
+
+body { 
+    color: white;
+}
+
+a {	
+    color: 	#007DC1;
+}
+
+.bg-dark {
+    background-color: #26252A !important
+}
+
+.card, h6 {
+    color: #26252A !important;
+}   
+
+.card {
+    background-color: #F7F8F8 !important;
+}
+
+hr {
+    border-top: 1px solid #fff;
+}
+
+.form-control {
+    background-color: #F7F8F8 !important;
+}
+
+label {
+    margin-bottom: unset !important;
+}
